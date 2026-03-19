@@ -3,92 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>အတာသင်္ကြန် အွန်လိုင်းရေလောင်းပွဲ</title>
+    <title>Songkran 2026 - Digital Water Fight</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Firebase SDKs -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu&display=swap');
-        body { font-family: 'Pyidaungsu', sans-serif; background: linear-gradient(to bottom, #00c6ff, #0072ff); min-height: 100vh; }
-        .water-drop { position: absolute; pointer-events: none; animation: fall 1s linear forwards; }
+        @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;700&display=swap');
+        
+        body { 
+            font-family: 'Pyidaungsu', sans-serif; 
+            background: #0f172a; /* Dark sleek background */
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Water Bubbles Background */
+        .circles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
+        .circles li { position: absolute; display: block; list-style: none; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.1); animation: animate 25s linear infinite; bottom: -150px; border-radius: 50%; }
+        .circles li:nth-child(1){ left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2){ left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        @keyframes animate { 0%{ transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; } 100%{ transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 20%; } }
+
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
+        .btn-grad { background-image: linear-gradient(to right, #00c6ff 0%, #0072ff  51%, #00c6ff  100%); transition: 0.5s; background-size: 200% auto; border-radius: 15px; }
+        .btn-grad:hover { background-position: right center; transform: translateY(-2px); }
+        
+        .water-drop { position: absolute; pointer-events: none; animation: fall 1.5s linear forwards; z-index: 50; }
         @keyframes fall { to { transform: translateY(100vh) scale(0); opacity: 0; } }
+        
+        #splash-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.5s; }
+        #splash-overlay.show { display: flex; opacity: 1; }
+
+        /* Responsive Video Container */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     </style>
 </head>
-<body class="text-white flex flex-col items-center p-4">
+<body class="text-white p-4">
 
-    <!-- Header -->
-    <header class="text-center my-6">
-        <h1 class="text-4xl font-bold">💦 အတာသင်္ကြန် 💦</h1>
-        <p class="mt-2 text-blue-100">အွန်လိုင်းကနေ ရေလောင်းကြမယ်</p>
-    </header>
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
 
-    <!-- Main Container -->
-    <div id="app" class="bg-white/20 backdrop-blur-md p-6 rounded-3xl shadow-2xl w-full max-w-md text-center">
-        
-        <!-- Step 1: Create Profile -->
-        <div id="setup-view">
-            <h2 class="text-xl mb-4">နာမည်လေးအရင်ပေးပါ</h2>
-            <input type="text" id="nickname" placeholder="Nickname..." class="w-full p-3 rounded-xl text-black outline-none mb-4">
-            
-            <p class="mb-2">Avatar ရွေးပါ</p>
-            <div class="flex justify-around mb-6">
-                <div class="avatar-opt border-4 border-transparent p-1 rounded-full cursor-pointer" onclick="selectAvatar('🧒', this)">
-                    <span class="text-4xl">🧒</span>
-                </div>
-                <div class="avatar-opt border-4 border-transparent p-1 rounded-full cursor-pointer" onclick="selectAvatar('👧', this)">
-                    <span class="text-4xl">👧</span>
-                </div>
-                <div class="avatar-opt border-4 border-transparent p-1 rounded-full cursor-pointer" onclick="selectAvatar('🐥', this)">
-                    <span class="text-4xl">🐥</span>
-                </div>
-            </div>
-            
-            <button onclick="createProfile()" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg transition">
-                Link ထုတ်မယ် 🚀
-            </button>
-        </div>
-
-        <!-- Step 2: Share Profile -->
-        <div id="share-view" class="hidden">
-            <div id="user-display" class="mb-4">
-                <span id="my-avatar" class="text-6xl"></span>
-                <h2 id="my-name" class="text-2xl font-bold mt-2"></h2>
-                <div class="text-yellow-300 text-lg mt-1">ရေလောင်းခံရမှု: <span id="my-count" class="font-bold text-2xl">0</span> ကြိမ်</div>
-            </div>
-            
-            <div id="qrcode" class="flex justify-center p-4 bg-white rounded-xl mb-4"></div>
-            
-            <button onclick="copyLink()" class="w-full bg-blue-600 py-3 rounded-xl mb-2 font-bold">🔗 Link ကူးမယ်</button>
-            <p class="text-xs text-blue-200">Link ကို Messenger ကနေတစ်ဆင့် သူငယ်ချင်းတွေကို ပို့ပြီး ရေလောင်းခိုင်းလိုက်ပါ!</p>
-        </div>
-
-        <!-- Step 3: Water Landing (Someone else's link) -->
-        <div id="splash-view" class="hidden">
-            <span id="target-avatar" class="text-8xl"></span>
-            <h2 id="target-name" class="text-3xl font-bold mt-4"></h2>
-            <p class="text-blue-100 mb-6">ကို ရေလောင်းပေးလိုက်ပါ!</p>
-            
-            <button onclick="pourWater()" class="bg-blue-500 hover:bg-cyan-400 p-8 rounded-full shadow-inner animate-bounce text-4xl">
-                🌊
-            </button>
-            <div class="mt-4 text-xl">လောင်းပြီးသူ: <span id="target-count" class="font-bold">0</span> ယောက်</div>
-        </div>
+    <div id="splash-overlay">
+        <lottie-player src="https://assets.lottiefiles.com/packages/lf20_7j0c9u.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+        <h2 class="text-3xl font-bold mt-4 text-cyan-400">လန်းဆန်းပါစေ! 💦</h2>
+        <button onclick="closeSplash()" class="mt-8 bg-white text-blue-900 py-2 px-8 rounded-full font-bold shadow-lg">Close</button>
     </div>
 
-    <!-- Contact & Services Section -->
-    <footer class="mt-10 text-center text-sm text-blue-100 space-y-2">
-        <p>Developed by <a href="https://m.me/1HiGd2hafR" class="underline font-bold text-yellow-300">Daily Wage App</a></p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="https://wedsite-apk-services.netlify.app/">Services</a>
-            <a href="https://apk-downloads.netlify.app/">APKs</a>
-            <a href="tel:0618201594">📞 0618201594</a>
+    <main class="max-w-md mx-auto space-y-6">
+        <header class="text-center py-6">
+            <div class="inline-block p-1 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 mb-4 shadow-xl">
+                <img src="https://raw.githubusercontent.com/dailywageapp/assets/main/logo.png" alt="Logo" class="h-20 w-20 rounded-full bg-slate-900">
+            </div>
+            <h1 class="text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500">DIGITAL WATER FIGHT</h1>
+            <p class="text-slate-400 text-sm mt-1 mb-6">Presented by Daily Wage App</p>
+
+            <div class="glass p-2 rounded-2xl mb-8 shadow-2xl">
+                <div class="video-container rounded-xl">
+                    <iframe src="https://www.youtube.com/embed/sVBWg9fCG_c?autoplay=0&mute=0&controls=1&modestbranding=1&rel=0" title="Thingyan Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </header>
+
+        <div id="app" class="glass p-6 shadow-2xl">
+            
+            <div id="setup-view">
+                <h2 class="text-xl mb-6 font-bold text-center">သင့်ကိုယ်ပိုင် Profile ဆောက်ပါ</h2>
+                <div class="space-y-4">
+                    <input type="text" id="nickname" placeholder="နာမည်ရိုက်ပါ..." class="w-full bg-slate-800/50 border border-slate-700 p-4 rounded-2xl outline-none focus:border-cyan-500 transition">
+                    
+                    <div class="flex justify-between gap-3 px-2">
+                        <button onclick="selectAvatar('🧒', this)" class="avatar-opt text-4xl p-3 rounded-2xl border-2 border-transparent bg-slate-800 hover:bg-slate-700 transition">🧒</button>
+                        <button onclick="selectAvatar('👧', this)" class="avatar-opt text-4xl p-3 rounded-2xl border-2 border-transparent bg-slate-800 hover:bg-slate-700 transition">👧</button>
+                        <button onclick="selectAvatar('🐥', this)" class="avatar-opt text-4xl p-3 rounded-2xl border-2 border-transparent bg-slate-800 hover:bg-slate-700 transition">🐥</button>
+                        <button onclick="selectAvatar('🕶️', this)" class="avatar-opt text-4xl p-3 rounded-2xl border-2 border-transparent bg-slate-800 hover:bg-slate-700 transition">🕶️</button>
+                    </div>
+                    
+                    <button onclick="createProfile()" class="w-full btn-grad py-4 font-bold text-lg shadow-lg uppercase tracking-wider mt-4">Profile တည်ဆောက်မည်</button>
+                </div>
+            </div>
+
+            <div id="share-view" class="hidden text-center space-y-6">
+                <div class="py-4">
+                    <span id="my-avatar" class="text-8xl block mb-2 filter drop-shadow-md">🧒</span>
+                    <h2 id="my-name" class="text-2xl font-bold">Aung Aung</h2>
+                    <div class="mt-3 inline-block px-6 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-cyan-300">
+                        ရေလောင်းခံရမှု: <span id="my-count" class="font-bold text-2xl ml-2">0</span>
+                    </div>
+                </div>
+                
+                <div id="qrcode" class="flex justify-center p-4 bg-white rounded-3xl mx-auto w-fit shadow-inner"></div>
+                
+                <div class="space-y-3">
+                    <button onclick="copyLink()" class="w-full bg-slate-800 hover:bg-slate-700 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 border border-slate-700 transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-link"></i> Link ကို Copy ကူးမည်
+                    </button>
+                    
+                    <button onclick="resetProfile()" class="w-full bg-red-500/20 hover:bg-red-500/40 py-3 rounded-xl text-sm font-medium text-red-300 border border-red-500/30 transition">
+                        <i class="fas fa-user-plus mr-2"></i> Profile အသစ် ပြန်ဆောက်မယ်
+                    </button>
+                    
+                    <p class="text-xs text-slate-500">Link ကို သူငယ်ချင်းတွေကိုပို့ပြီး ရေလောင်းခိုင်းပါ</p>
+                </div>
+            </div>
+
+            <div id="splash-view" class="hidden text-center space-y-8 py-4">
+                <div>
+                    <span id="target-avatar" class="text-9xl block">👧</span>
+                    <h2 id="target-name" class="text-3xl font-bold mt-2">Target Name</h2>
+                    <p class="text-slate-400 italic">"အတာရေနဲ့ ဆေးကြောပေးလိုက်ပါ"</p>
+                </div>
+
+                <button onclick="pourWater()" class="group relative inline-flex items-center justify-center">
+                    <div class="absolute inset-0 bg-cyan-400 rounded-full blur-xl opacity-30 group-hover:opacity-60 transition"></div>
+                    <div class="relative bg-gradient-to-b from-cyan-400 to-blue-600 p-10 rounded-full text-6xl shadow-2xl transform active:scale-90 transition">
+                        🌊
+                    </div>
+                </button>
+
+                <div class="text-xl font-medium text-slate-300">
+                    စုစုပေါင်းလောင်းပြီးသူ: <span id="target-count" class="text-cyan-400 font-bold text-2xl ml-1">0</span>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <div class="glass p-6 space-y-6">
+            <div>
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-bullhorn text-cyan-400"></i> Follow Us
+                </h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <a href="https://www.facebook.com/share/1HGhQ4hVEf/" class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/40 hover:bg-blue-600/20 transition">
+                        <i class="fab fa-facebook-f text-blue-500 w-5"></i> Facebook Page
+                    </a>
+                    <a href="https://www.tiktok.com/@dailywageapp" class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/40 hover:bg-pink-500/20 transition">
+                        <i class="fab fa-tiktok text-pink-500 w-5"></i> TikTok
+                    </a>
+                    <a href="https://m.me/1HiGd2hafR" class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/40 hover:bg-blue-400/20 transition">
+                        <i class="fab fa-facebook-messenger text-blue-400 w-5"></i> Messenger Chat
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-700 pt-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-headset text-cyan-400"></i> Contact
+                </h3>
+                <a href="tel:0618201594" class="flex items-center gap-3 text-xl font-bold text-cyan-300">
+                    <i class="fas fa-phone-alt"></i> 0618201594
+                </a>
+                <p class="text-xs text-slate-500 mt-2">Have questions? Reach out to us on any of our social channels!</p>
+            </div>
+
+            <div class="border-t border-slate-700 pt-6">
+                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Our Services</h3>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <a href="https://wedsite-apk-services.netlify.app/" class="p-2 border border-slate-800 rounded-lg hover:border-cyan-500 transition">Wedsite Services</a>
+                    <a href="https://apk-downloads.netlify.app/" class="p-2 border border-slate-800 rounded-lg hover:border-cyan-500 transition">APK Downloads</a>
+                    <a href="https://premium-all-in-one.netlify.app/" class="p-2 border border-slate-800 rounded-lg hover:border-cyan-500 transition">Premium All-in-One</a>
+                    <a href="https://dailywage.apk.com" class="p-2 border border-slate-800 rounded-lg hover:border-cyan-500 transition text-cyan-400 font-bold">Daily Wage APK</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center pb-10">
+            <p class="text-slate-500 text-xs">&copy; 2026 Thingyan Water Fight. All rights reserved.</p>
+        </footer>
+    </main>
 
     <script>
-        // Firebase Configuration (Using your provided config)
+        // --- Firebase Config (Keep your original config) ---
         const firebaseConfig = {
             apiKey: "AIzaSyD7T7WZg0fLGTw6ShqDHjOva-btNF6O1AM",
             authDomain: "seafood-oder.firebaseapp.com",
@@ -104,8 +193,6 @@
         
         let selectedAvatarIcon = '🧒';
         let currentUserId = localStorage.getItem('thingyan_user_id');
-
-        // Check if URL has an ID (Someone visiting a link)
         const urlParams = new URLSearchParams(window.location.search);
         const targetId = urlParams.get('id');
 
@@ -121,8 +208,8 @@
 
         function selectAvatar(icon, el) {
             selectedAvatarIcon = icon;
-            document.querySelectorAll('.avatar-opt').forEach(opt => opt.style.borderColor = 'transparent');
-            el.style.borderColor = '#fbbf24';
+            document.querySelectorAll('.avatar-opt').forEach(opt => opt.classList.remove('border-cyan-500', 'bg-slate-700'));
+            el.classList.add('border-cyan-500', 'bg-slate-700');
         }
 
         function showView(viewId) {
@@ -134,16 +221,11 @@
             const name = document.getElementById('nickname').value;
             if (!name) return alert("နာမည်လေး အရင်ရိုက်ပါဗျာ!");
             
-            const newId = 'user_' + Math.random().toString(36).substr(2, 9);
-            const userData = {
-                name: name,
-                avatar: selectedAvatarIcon,
-                count: 0
-            };
+            const newId = 'tg_' + Math.random().toString(36).substr(2, 9);
+            const userData = { name: name, avatar: selectedAvatarIcon, count: 0 };
 
             db.ref('users/' + newId).set(userData).then(() => {
                 localStorage.setItem('thingyan_user_id', newId);
-                currentUserId = newId;
                 location.reload();
             });
         }
@@ -158,7 +240,7 @@
                     
                     const link = window.location.origin + window.location.pathname + '?id=' + id;
                     document.getElementById('qrcode').innerHTML = "";
-                    new QRCode(document.getElementById("qrcode"), { text: link, width: 150, height: 150 });
+                    new QRCode(document.getElementById("qrcode"), { text: link, width: 160, height: 160, colorDark : "#0f172a" });
                 }
             });
         }
@@ -178,22 +260,37 @@
             if (!targetId) return;
             db.ref('users/' + targetId + '/count').transaction((current) => (current || 0) + 1);
             
-            // Splash Animation
-            for(let i=0; i<15; i++) {
+            document.getElementById('splash-overlay').classList.add('show');
+
+            for(let i=0; i<40; i++) {
                 const drop = document.createElement('div');
                 drop.innerHTML = '💧';
                 drop.className = 'water-drop text-2xl';
                 drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.top = '-20px';
+                drop.style.top = '-50px';
+                drop.style.animationDelay = Math.random() * 0.4 + 's';
                 document.body.appendChild(drop);
                 setTimeout(() => drop.remove(), 2000);
             }
+        }
+
+        function closeSplash() {
+            document.getElementById('splash-overlay').classList.remove('show');
         }
 
         function copyLink() {
             const link = window.location.origin + window.location.pathname + '?id=' + currentUserId;
             navigator.clipboard.writeText(link).then(() => alert("Link ကို Copy ကူးလိုက်ပါပြီ!"));
         }
+
+        // Profile ပြန်ဆောက်ရန် function
+        function resetProfile() {
+            if(confirm("Profile အသစ်ပြန်ဆောက်မှာ သေချာပါသလား?")) {
+                localStorage.removeItem('thingyan_user_id');
+                window.location.href = window.location.origin + window.location.pathname;
+            }
+        }
     </script>
 </body>
 </html>
+
