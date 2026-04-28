@@ -114,6 +114,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
+        // Set persistence to LOCAL to stay logged in
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
         let profile = JSON.parse(localStorage.getItem('f_prof')) || { name: 'User', code: 'EMP001', points: 0, lastClaim: '', wage: 375 };
         let records = JSON.parse(localStorage.getItem('f_recs')) || [];
@@ -214,20 +216,36 @@
                 if (result.user) {
                     profile.name = result.user.displayName;
                     profile.code = result.user.email.split('@')[0];
-                    saveProfile();
+                    // Fetch data from Firebase immediately after login
+                    db.ref('users/' + profile.code).once('value').then(snap => {
+                        if (snap.exists()) {
+                            const data = snap.val();
+                            profile = data.profile || profile;
+                            records = data.records || records;
+                            saveLocal();
+                        } else {
+                            saveProfile();
+                        }
+                        updateHeader();
+                        updateRewardUI();
+                    });
                 }
             }).catch((error) => {
                 console.error("Login Error:", error);
             });
 
             auth.onAuthStateChanged(user => {
-                if (!user) document.getElementById('loginModal').style.display = 'flex';
-                else {
+                if (!user) {
+                    document.getElementById('loginModal').style.display = 'flex';
+                } else {
                     document.getElementById('loginModal').style.display = 'none';
-                    // Firebase ကနေ Points ပြန်ဆွဲတင်မယ် (Data မပျောက်အောင်)
-                    db.ref('users/' + user.email.split('@')[0] + '/profile').once('value').then(snap => {
+                    // Sync data from Firebase to local to ensure consistency
+                    db.ref('users/' + user.email.split('@')[0]).once('value').then(snap => {
                         if (snap.exists()) {
-                            profile = snap.val();
+                            const data = snap.val();
+                            profile = data.profile || profile;
+                            records = data.records || records;
+                            saveLocal();
                             updateHeader();
                             updateRewardUI();
                         }
