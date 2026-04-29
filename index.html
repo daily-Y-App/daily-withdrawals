@@ -211,23 +211,27 @@
         }
 
         window.onload = () => {
+            // Initialize UI from LocalStorage first
+            updateHeader();
+            updateRewardUI();
+
             // Handle Redirect Result
             auth.getRedirectResult().then((result) => {
                 if (result.user) {
-                    profile.name = result.user.displayName;
-                    profile.code = result.user.email.split('@')[0];
-                    // Fetch data from Firebase immediately after login
-                    db.ref('users/' + profile.code).once('value').then(snap => {
+                    const userCode = result.user.email.split('@')[0];
+                    db.ref('users/' + userCode).once('value').then(snap => {
                         if (snap.exists()) {
                             const data = snap.val();
                             profile = data.profile || profile;
                             records = data.records || records;
-                            saveLocal();
                         } else {
-                            saveProfile();
+                            profile.name = result.user.displayName;
+                            profile.code = userCode;
                         }
+                        saveLocal();
                         updateHeader();
                         updateRewardUI();
+                        document.getElementById('loginModal').style.display = 'none';
                     });
                 }
             }).catch((error) => {
@@ -235,12 +239,10 @@
             });
 
             auth.onAuthStateChanged(user => {
-                if (!user) {
-                    document.getElementById('loginModal').style.display = 'flex';
-                } else {
+                if (user) {
                     document.getElementById('loginModal').style.display = 'none';
-                    // Sync data from Firebase to local to ensure consistency
-                    db.ref('users/' + user.email.split('@')[0]).once('value').then(snap => {
+                    const userCode = user.email.split('@')[0];
+                    db.ref('users/' + userCode).once('value').then(snap => {
                         if (snap.exists()) {
                             const data = snap.val();
                             profile = data.profile || profile;
@@ -250,6 +252,11 @@
                             updateRewardUI();
                         }
                     });
+                } else {
+                    // Only show modal if NOT in the middle of a redirect
+                    if (!window.location.hash.includes('access_token')) {
+                        document.getElementById('loginModal').style.display = 'flex';
+                    }
                 }
             });
             document.getElementById('iDate').valueAsDate = new Date();
