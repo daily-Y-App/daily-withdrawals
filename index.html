@@ -130,6 +130,8 @@
 
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
+            // Force Google to show account selection to avoid auto-login issues
+            provider.setCustomParameters({ prompt: 'select_account' });
             auth.signInWithRedirect(provider);
         }
 
