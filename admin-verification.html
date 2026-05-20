@@ -23,7 +23,6 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             background: white;
             padding: 20px;
@@ -55,21 +54,33 @@
             margin: 5px 0;
         }
 
-        .logout-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .logout-btn:hover {
-            background: #ff5252;
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        /* Main Grid */
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -77,18 +88,29 @@
             margin-bottom: 30px;
         }
 
-        /* Pending Requests */
-        .pending-section {
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .section {
             background: white;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .pending-section h2 {
+        .section h2 {
             color: #333;
             margin-bottom: 20px;
             font-size: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
         }
 
         .request-item {
@@ -97,29 +119,34 @@
             border-radius: 8px;
             margin-bottom: 15px;
             border-left: 4px solid #667eea;
-            cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .request-item:hover {
-            background: #f0f7ff;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        .request-item.pending {
+            border-left-color: #ffc107;
         }
 
-        .request-item-header {
+        .request-item.completed {
+            border-left-color: #28a745;
+        }
+
+        .request-item.failed {
+            border-left-color: #dc3545;
+        }
+
+        .request-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
 
-        .request-item-name {
+        .request-name {
             font-weight: 600;
             color: #333;
             font-size: 16px;
         }
 
-        .request-item-baht {
+        .request-amount {
             background: #667eea;
             color: white;
             padding: 6px 12px;
@@ -128,23 +155,23 @@
             font-weight: 600;
         }
 
-        .request-item-details {
+        .request-details {
             color: #666;
             font-size: 13px;
             line-height: 1.6;
+            margin-bottom: 10px;
         }
 
-        .request-item-details p {
+        .request-details p {
             margin: 5px 0;
         }
 
-        .request-item-actions {
+        .request-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
         }
 
-        .btn-small {
+        .btn {
             padding: 8px 12px;
             border: none;
             border-radius: 4px;
@@ -154,13 +181,13 @@
             font-weight: 600;
         }
 
-        .btn-verify {
+        .btn-approve {
             background: #28a745;
             color: white;
             flex: 1;
         }
 
-        .btn-verify:hover {
+        .btn-approve:hover {
             background: #218838;
         }
 
@@ -185,265 +212,29 @@
             margin-bottom: 15px;
         }
 
-        /* Verification Panel */
-        .verification-panel {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .verification-panel.show {
-            display: block;
-        }
-
-        .verification-panel h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .verification-details {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            color: #666;
-            font-weight: 500;
-        }
-
-        .detail-value {
-            color: #333;
-            font-weight: 600;
-        }
-
-        /* Anti-Fraud Checks */
-        .fraud-checks {
-            background: #f0f7ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .fraud-checks h4 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .fraud-check-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 8px 0;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .fraud-check-icon {
-            font-size: 16px;
-        }
-
-        .fraud-check-icon.pass {
-            color: #28a745;
-        }
-
-        .fraud-check-icon.fail {
-            color: #dc3545;
-        }
-
-        .fraud-check-icon.warning {
-            color: #ffc107;
-        }
-
-        /* Payment Method Selection */
-        .payment-method {
-            margin-bottom: 20px;
-        }
-
-        .payment-method h4 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .payment-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .payment-option {
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .payment-option:hover {
-            border-color: #667eea;
-            background: #f0f7ff;
-        }
-
-        .payment-option.selected {
-            border-color: #667eea;
-            background: #f0f7ff;
-        }
-
-        .payment-option-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .payment-option-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-
-        /* Verification Code */
-        .verification-code {
-            margin-bottom: 20px;
-        }
-
-        .verification-code h4 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .code-display {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            letter-spacing: 5px;
-            color: #667eea;
-            font-family: 'Courier New', monospace;
-            margin-bottom: 10px;
-        }
-
-        .code-info {
-            color: #666;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .code-timer {
+        .status-badge {
             display: inline-block;
-            background: #ffc107;
-            color: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
-            margin-left: 5px;
         }
 
-        /* Form */
-        .form-group {
-            margin-bottom: 20px;
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 14px;
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
         }
 
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: #eee;
-            color: #333;
-            width: 100%;
-        }
-
-        .btn-secondary:hover {
-            background: #ddd;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-group .btn {
-            flex: 1;
-        }
-
-        /* Alert */
         .alert {
             padding: 15px;
             border-radius: 6px;
@@ -467,19 +258,12 @@
             border: 1px solid #f5c6cb;
         }
 
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-        }
-
         .alert-info {
             background: #d1ecf1;
             color: #0c5460;
             border: 1px solid #bee5eb;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -509,14 +293,17 @@
         .modal-header {
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #333;
         }
 
         .modal-body {
             margin-bottom: 20px;
             color: #666;
-            line-height: 1.6;
+        }
+
+        .modal-body p {
+            margin: 10px 0;
         }
 
         .modal-footer {
@@ -525,583 +312,426 @@
             justify-content: flex-end;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
+        .btn-modal {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .header-right {
-                flex-direction: column;
-                margin-top: 15px;
-            }
-
-            .admin-info {
-                text-align: center;
-            }
-
-            .payment-options {
-                grid-template-columns: 1fr;
-            }
+        .btn-modal-primary {
+            background: #667eea;
+            color: white;
         }
 
-        /* Stats */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+        .btn-modal-primary:hover {
+            background: #764ba2;
         }
 
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
+        .btn-modal-secondary {
+            background: #eee;
+            color: #333;
         }
 
-        .stat-card h3 {
+        .btn-modal-secondary:hover {
+            background: #ddd;
+        }
+
+        .device-id {
+            font-size: 11px;
             color: #999;
-            font-size: 12px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            word-break: break-all;
+            font-family: monospace;
         }
 
-        .stat-card .value {
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .refresh-btn:hover {
+            background: #764ba2;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
             color: #667eea;
-            font-size: 28px;
-            font-weight: bold;
+            border-bottom-color: #667eea;
         }
 
-        @media (max-width: 768px) {
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div>
-                <h1>🔐 Admin Verification Panel</h1>
+                <h1>🔧 RewardHub Admin</h1>
+                <p style="color: #999; font-size: 12px;">Withdrawal Verification Panel</p>
             </div>
             <div class="header-right">
-                <div class="admin-info">
-                    <p>Admin အကောင့်</p>
-                    <p id="adminEmail" style="font-weight: bold; color: #333;"></p>
-                    <button class="logout-btn" onclick="logout()">ထွက်ခွာ</button>
-                </div>
+                <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
             </div>
         </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <h3>စောင့်ဆိုင်းနေ</h3>
-                <div class="value" id="pendingCount">0</div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-label">⏳ Pending</div>
+                <div class="stat-value" id="pendingCount">0</div>
             </div>
-            <div class="stat-card">
-                <h3>အတည်ပြုပြီး</h3>
-                <div class="value" id="completedCount">0</div>
+            <div class="stat-box">
+                <div class="stat-label">✅ Approved</div>
+                <div class="stat-value" id="approvedCount">0</div>
             </div>
-            <div class="stat-card">
-                <h3>ပယ်ဖျက်ပြီး</h3>
-                <div class="value" id="failedCount">0</div>
+            <div class="stat-box">
+                <div class="stat-label">❌ Rejected</div>
+                <div class="stat-value" id="rejectedCount">0</div>
             </div>
-            <div class="stat-card">
-                <h3>စုစုပေါင်း Baht</h3>
-                <div class="value" id="totalBaht">0</div>
+            <div class="stat-box">
+                <div class="stat-label">💰 Total Pending</div>
+                <div class="stat-value" id="totalPendingBaht">0</div>
             </div>
         </div>
 
-        <!-- Main Grid -->
+        <div class="alert alert-info" id="infoAlert" style="display: none;">
+            <strong>ℹ️ Admin Panel Instructions:</strong><br>
+            • Review withdrawal requests from users<br>
+            • Approve or reject each request<br>
+            • Approved withdrawals will be processed within 24 hours<br>
+            • All transactions are logged and cannot be reversed
+        </div>
+
+        <div class="alert alert-success" id="successAlert" style="display: none;">
+            <strong id="successMessage"></strong>
+        </div>
+
+        <div class="alert alert-error" id="errorAlert" style="display: none;">
+            <strong id="errorMessage"></strong>
+        </div>
+
         <div class="main-grid">
-            <!-- Pending Requests -->
-            <div class="pending-section">
-                <h2>📋 စောင့်ဆိုင်းနေသော ငွေထုတ်မှုများ</h2>
-                <div id="pendingRequests"></div>
+            <div class="section">
+                <h2>⏳ Pending Requests</h2>
+                <div id="pendingList"></div>
             </div>
 
-            <!-- Verification Panel -->
-            <div class="verification-panel" id="verificationPanel">
-                <h2>🔍 Verification & Approval</h2>
-
-                <div id="verificationAlert" class="alert"></div>
-
-                <!-- Verification Details -->
-                <div class="verification-details" id="verificationDetails"></div>
-
-                <!-- Anti-Fraud Checks -->
-                <div class="fraud-checks">
-                    <h4>🛡️ Anti-Fraud Checks</h4>
-                    <div id="fraudChecksList"></div>
+            <div class="section">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('approved')">✅ Approved</button>
+                    <button class="tab-btn" onclick="switchTab('rejected')">❌ Rejected</button>
                 </div>
 
-                <!-- Payment Method -->
-                <div class="payment-method">
-                    <h4>💳 Payment Method ရွေးချယ်ခြင်း</h4>
-                    <div class="payment-options">
-                        <div class="payment-option" onclick="selectPaymentMethod('kpay')">
-                            <div class="payment-option-icon">📱</div>
-                            <div class="payment-option-name">KPay (Myanmar)</div>
-                        </div>
-                        <div class="payment-option" onclick="selectPaymentMethod('promptpay')">
-                            <div class="payment-option-icon">🇹🇭</div>
-                            <div class="payment-option-name">PromptPay (Thailand)</div>
-                        </div>
-                    </div>
+                <div id="approved" class="tab-content active">
+                    <h2 style="border-bottom: none; margin-top: 0;">✅ Approved Requests</h2>
+                    <div id="approvedList"></div>
                 </div>
 
-                <!-- Verification Code -->
-                <div class="verification-code">
-                    <h4>🔐 Verification Code</h4>
-                    <div class="code-display" id="codeDisplay">------</div>
-                    <div class="code-info">
-                        Code expires in <span class="code-timer" id="codeTimer">10:00</span>
-                    </div>
-                </div>
-
-                <!-- Approval Notes -->
-                <div class="form-group">
-                    <label>Approval Notes (Optional)</label>
-                    <textarea id="approvalNotes" placeholder="ဥပမာ: ငွေပေးပြီး"></textarea>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="cancelVerification()">ပယ်ဖျက်ခြင်း</button>
-                    <button class="btn btn-primary" onclick="approveWithdrawal()">✓ အတည်ပြုခြင်း</button>
-                </div>
-
-                <div style="margin-top: 15px;">
-                    <button class="btn btn-secondary" onclick="rejectWithdrawal()">✕ ပယ်ဖျက်ခြင်း</button>
+                <div id="rejected" class="tab-content">
+                    <h2 style="border-bottom: none; margin-top: 0;">❌ Rejected Requests</h2>
+                    <div id="rejectedList"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Rejection Modal -->
-    <div id="rejectionModal" class="modal">
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">ပယ်ဖျက်ခြင်းအကြောင်းအရာ</div>
+            <div class="modal-header" id="modalTitle">Approve Withdrawal</div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>ပယ်ဖျက်ခြင်းအကြောင်းအရာ *</label>
-                    <textarea id="rejectionReason" placeholder="ဥပမာ: အကောင့်အမည်မှားသည်"></textarea>
+                <p><strong>Account Name:</strong> <span id="modalName"></span></p>
+                <p><strong>PromptPay ID:</strong> <span id="modalAccount"></span></p>
+                <p><strong>Amount:</strong> <span id="modalAmount"></span> points (<span id="modalBaht"></span> Baht)</p>
+                <p><strong>Request Date:</strong> <span id="modalDate"></span></p>
+                <div class="device-id">
+                    <strong>Device ID:</strong> <span id="modalDeviceId"></span>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeRejectionModal()" style="flex: 1;">ပယ်ဖျက်ခြင်း</button>
-                <button class="btn btn-primary" onclick="confirmRejection()" style="flex: 1;">အတည်ပြုခြင်း</button>
+                <button class="btn-modal btn-modal-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-modal btn-modal-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Global Variables
-        let currentAdmin = null;
-        let currentWithdrawal = null;
-        let selectedPaymentMethod = null;
-        let verificationCode = null;
-        let codeExpiry = null;
-        let codeTimer = null;
+        let allUsers = {};
+        let currentAction = null;
+        let currentRequest = null;
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeAdmin();
-            loadPendingRequests();
-            updateStats();
-        });
-
-        // Initialize Admin
-        function initializeAdmin() {
-            const adminEmail = 'admin@rewardhub.com';
-            currentAdmin = {
-                email: adminEmail,
-                role: 'admin',
-                loginTime: new Date().toISOString()
-            };
-            document.getElementById('adminEmail').textContent = adminEmail;
-        }
-
-        // Generate Verification Code
-        function generateVerificationCode() {
-            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-            codeExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        // Load all users from LocalStorage
+        function loadAllUsers() {
+            allUsers = {};
             
-            document.getElementById('codeDisplay').textContent = verificationCode;
-            startCodeTimer();
-        }
-
-        // Code Timer
-        function startCodeTimer() {
-            if (codeTimer) clearInterval(codeTimer);
-            
-            codeTimer = setInterval(() => {
-                const now = new Date();
-                const remaining = codeExpiry - now;
-                
-                if (remaining <= 0) {
-                    clearInterval(codeTimer);
-                    document.getElementById('codeTimer').textContent = 'Expired';
-                    document.getElementById('codeTimer').style.background = '#dc3545';
-                    document.getElementById('codeTimer').style.color = 'white';
-                    return;
+            // Get all keys from LocalStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('rewardHubData_')) {
+                    const deviceId = key.replace('rewardHubData_', '');
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    allUsers[deviceId] = userData;
                 }
-                
-                const minutes = Math.floor(remaining / 60000);
-                const seconds = Math.floor((remaining % 60000) / 1000);
-                document.getElementById('codeTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
+            }
+
+            console.log('✅ Loaded', Object.keys(allUsers).length, 'users');
+            updateDisplay();
         }
 
-        // Select Payment Method
-        function selectPaymentMethod(method) {
-            selectedPaymentMethod = method;
-            
-            document.querySelectorAll('.payment-option').forEach(el => {
-                el.classList.remove('selected');
+        // Update display
+        function updateDisplay() {
+            let pendingCount = 0;
+            let approvedCount = 0;
+            let rejectedCount = 0;
+            let totalPendingBaht = 0;
+
+            const pendingList = document.getElementById('pendingList');
+            const approvedList = document.getElementById('approvedList');
+            const rejectedList = document.getElementById('rejectedList');
+
+            pendingList.innerHTML = '';
+            approvedList.innerHTML = '';
+            rejectedList.innerHTML = '';
+
+            // Collect all withdrawal requests
+            Object.keys(allUsers).forEach(deviceId => {
+                const user = allUsers[deviceId];
+                const requests = user.withdrawalRequests || [];
+
+                requests.forEach(request => {
+                    const item = createRequestElement(request, deviceId, user);
+
+                    if (request.status === 'pending') {
+                        pendingCount++;
+                        totalPendingBaht += parseFloat(request.baht);
+                        pendingList.appendChild(item);
+                    } else if (request.status === 'completed') {
+                        approvedCount++;
+                        approvedList.appendChild(item);
+                    } else if (request.status === 'failed') {
+                        rejectedCount++;
+                        rejectedList.appendChild(item);
+                    }
+                });
             });
-            
-            event.target.closest('.payment-option').classList.add('selected');
+
+            // Update stats
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('approvedCount').textContent = approvedCount;
+            document.getElementById('rejectedCount').textContent = rejectedCount;
+            document.getElementById('totalPendingBaht').textContent = totalPendingBaht.toFixed(2);
+
+            // Show empty states
+            if (pendingCount === 0) {
+                pendingList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✨</div>No pending requests</div>';
+            }
+            if (approvedCount === 0) {
+                approvedList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No approved requests</div>';
+            }
+            if (rejectedCount === 0) {
+                rejectedList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No rejected requests</div>';
+            }
         }
 
-        // Load Pending Requests
-        function loadPendingRequests() {
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            const pending = withdrawals.filter(w => w.status === 'pending');
-            
-            const container = document.getElementById('pendingRequests');
-            
-            if (pending.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">✅</div>
-                        <p>စောင့်ဆိုင်းနေသော ငွေထုတ်မှုမရှိပါ</p>
+        // Create request element
+        function createRequestElement(request, deviceId, user) {
+            const item = document.createElement('div');
+            item.className = 'request-item ' + request.status;
+
+            let statusBadge = '';
+            let actions = '';
+
+            if (request.status === 'pending') {
+                statusBadge = '<span class="status-badge status-pending">⏳ Pending</span>';
+                actions = `
+                    <div class="request-actions">
+                        <button class="btn btn-approve" onclick="openModal('approve', '${deviceId}', ${JSON.stringify(request).replace(/'/g, '&#39;')})">✅ Approve</button>
+                        <button class="btn btn-reject" onclick="openModal('reject', '${deviceId}', ${JSON.stringify(request).replace(/'/g, '&#39;')})">❌ Reject</button>
                     </div>
                 `;
+            } else if (request.status === 'completed') {
+                statusBadge = '<span class="status-badge status-completed">✅ Completed</span>';
+            } else if (request.status === 'failed') {
+                statusBadge = '<span class="status-badge status-failed">❌ Rejected</span>';
+            }
+
+            const date = new Date(request.date).toLocaleString('my-MM');
+
+            item.innerHTML = `
+                <div class="request-header">
+                    <div class="request-name">${request.accountName}</div>
+                    <div class="request-amount">${request.baht} Baht</div>
+                </div>
+                <div class="request-details">
+                    <p><strong>PromptPay ID:</strong> ${request.accountNumber}</p>
+                    <p><strong>Points:</strong> ${request.points}</p>
+                    <p><strong>Date:</strong> ${date}</p>
+                    <p><strong>Device ID:</strong> <span style="font-family: monospace; font-size: 11px;">${deviceId}</span></p>
+                    ${statusBadge}
+                </div>
+                ${actions}
+            `;
+
+            return item;
+        }
+
+        // Open modal
+        function openModal(action, deviceId, request) {
+            currentAction = action;
+            currentRequest = { deviceId, ...request };
+
+            const modalTitle = action === 'approve' ? 'Approve Withdrawal' : 'Reject Withdrawal';
+            const confirmBtnText = action === 'approve' ? '✅ Approve' : '❌ Reject';
+
+            document.getElementById('modalTitle').textContent = modalTitle;
+            document.getElementById('modalName').textContent = request.accountName;
+            document.getElementById('modalAccount').textContent = request.accountNumber;
+            document.getElementById('modalAmount').textContent = request.points;
+            document.getElementById('modalBaht').textContent = request.baht;
+            document.getElementById('modalDate').textContent = new Date(request.date).toLocaleString('my-MM');
+            document.getElementById('modalDeviceId').textContent = deviceId;
+            document.getElementById('confirmBtn').textContent = confirmBtnText;
+
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+            currentAction = null;
+            currentRequest = null;
+        }
+
+        // Confirm action
+        function confirmAction() {
+            if (!currentAction || !currentRequest) return;
+
+            const deviceId = currentRequest.deviceId;
+            const user = allUsers[deviceId];
+
+            if (!user) {
+                showError('User not found');
                 return;
             }
-            
-            let html = '';
-            pending.forEach(w => {
-                const date = new Date(w.requestedAt).toLocaleDateString('my-MM');
-                const time = new Date(w.requestedAt).toLocaleTimeString('my-MM');
-                
-                html += `
-                    <div class="request-item" onclick="selectWithdrawal('${w.id}')">
-                        <div class="request-item-header">
-                            <div class="request-item-name">${w.truemoneyName}</div>
-                            <div class="request-item-baht">${w.baht} Baht</div>
-                        </div>
-                        <div class="request-item-details">
-                            <p>📱 ဖုန်းနံပါတ်: ${w.truemoneyPhone}</p>
-                            <p>📊 Points: ${w.points.toLocaleString()}</p>
-                            <p>🕐 အခါ: ${date} ${time}</p>
-                            <p>📧 Email: ${w.userEmail}</p>
-                        </div>
-                        <div class="request-item-actions">
-                            <button class="btn-small btn-verify" onclick="selectWithdrawal('${w.id}'); event.stopPropagation();">
-                                Verify
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
 
-        // Select Withdrawal
-        function selectWithdrawal(withdrawalId) {
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            currentWithdrawal = withdrawals.find(w => w.id === withdrawalId);
-            
-            if (!currentWithdrawal) return;
-            
-            // Generate verification code
-            generateVerificationCode();
-            
-            // Show verification panel
-            document.getElementById('verificationPanel').classList.add('show');
-            
-            // Load verification details
-            loadVerificationDetails();
-            
-            // Load fraud checks
-            loadFraudChecks();
-            
-            // Reset payment method
-            selectedPaymentMethod = null;
-            document.querySelectorAll('.payment-option').forEach(el => {
-                el.classList.remove('selected');
-            });
-        }
-
-        // Load Verification Details
-        function loadVerificationDetails() {
-            const w = currentWithdrawal;
-            const date = new Date(w.requestedAt).toLocaleDateString('my-MM');
-            const time = new Date(w.requestedAt).toLocaleTimeString('my-MM');
-            
-            const html = `
-                <div class="detail-row">
-                    <span class="detail-label">အကောင့်အမည်</span>
-                    <span class="detail-value">${w.truemoneyName}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">ဖုန်းနံပါတ်</span>
-                    <span class="detail-value">${w.truemoneyPhone}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Points</span>
-                    <span class="detail-value">${w.points.toLocaleString()}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Baht</span>
-                    <span class="detail-value">${w.baht.toLocaleString()}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Email</span>
-                    <span class="detail-value">${w.userEmail}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">အခါ</span>
-                    <span class="detail-value">${date} ${time}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">မှတ်ချက်</span>
-                    <span class="detail-value">${w.notes || 'မရှိ'}</span>
-                </div>
-            `;
-            
-            document.getElementById('verificationDetails').innerHTML = html;
-        }
-
-        // Load Fraud Checks
-        function loadFraudChecks() {
-            const w = currentWithdrawal;
-            let html = '';
-            
-            // Check 1: Phone format
-            const phoneValid = /^09\d{8}$/.test(w.truemoneyPhone) || /^0[1-9]\d{7,8}$/.test(w.truemoneyPhone);
-            html += `
-                <div class="fraud-check-item">
-                    <span class="fraud-check-icon ${phoneValid ? 'pass' : 'fail'}">
-                        ${phoneValid ? '✓' : '✕'}
-                    </span>
-                    <span>ဖုန်းနံပါတ် Format ${phoneValid ? 'မှန်ကန်' : 'မှားသည်'}</span>
-                </div>
-            `;
-            
-            // Check 2: Account name
-            const nameValid = w.truemoneyName && w.truemoneyName.trim().length > 0;
-            html += `
-                <div class="fraud-check-item">
-                    <span class="fraud-check-icon ${nameValid ? 'pass' : 'fail'}">
-                        ${nameValid ? '✓' : '✕'}
-                    </span>
-                    <span>အကောင့်အမည် ${nameValid ? 'ရှိ' : 'မရှိ'}</span>
-                </div>
-            `;
-            
-            // Check 3: Points validity
-            const pointsValid = w.points >= 1000;
-            html += `
-                <div class="fraud-check-item">
-                    <span class="fraud-check-icon ${pointsValid ? 'pass' : 'fail'}">
-                        ${pointsValid ? '✓' : '✕'}
-                    </span>
-                    <span>Points အနည်းဆုံး 1000 ${pointsValid ? '✓' : '✕'}</span>
-                </div>
-            `;
-            
-            // Check 4: Duplicate requests
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            const recentRequests = withdrawals.filter(wd => 
-                wd.truemoneyPhone === w.truemoneyPhone && 
-                wd.id !== w.id &&
-                new Date(wd.requestedAt) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+            // Find and update the request
+            const requestIndex = user.withdrawalRequests.findIndex(r => 
+                r.date === currentRequest.date && r.accountNumber === currentRequest.accountNumber
             );
-            const noDuplicate = recentRequests.length === 0;
-            html += `
-                <div class="fraud-check-item">
-                    <span class="fraud-check-icon ${noDuplicate ? 'pass' : 'warning'}">
-                        ${noDuplicate ? '✓' : '⚠'}
-                    </span>
-                    <span>${noDuplicate ? 'အတူတူ ငွေထုတ်မှု မရှိ' : '24 ရက်အတွင်း အတူတူ ငွေထုတ်မှု ' + recentRequests.length + ' ခုရှိ'}</span>
-                </div>
-            `;
-            
-            // Check 5: Amount check
-            const amountReasonable = w.baht <= 10000;
-            html += `
-                <div class="fraud-check-item">
-                    <span class="fraud-check-icon ${amountReasonable ? 'pass' : 'warning'}">
-                        ${amountReasonable ? '✓' : '⚠'}
-                    </span>
-                    <span>ငွေထုတ်မှု အခြေအနေ ${amountReasonable ? 'ပုံမှန်' : 'အများကြီး'}</span>
-                </div>
-            `;
-            
-            document.getElementById('fraudChecksList').innerHTML = html;
-        }
 
-        // Approve Withdrawal
-        function approveWithdrawal() {
-            if (!currentWithdrawal) return;
-            
-            if (!selectedPaymentMethod) {
-                showAlert('verificationAlert', 'Payment method ရွေးချယ်ပါ', 'error');
+            if (requestIndex === -1) {
+                showError('Request not found');
                 return;
             }
-            
-            if (!verificationCode) {
-                showAlert('verificationAlert', 'Verification code မရှိပါ', 'error');
-                return;
-            }
-            
-            // Update withdrawal
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            const index = withdrawals.findIndex(w => w.id === currentWithdrawal.id);
-            
-            if (index !== -1) {
-                withdrawals[index].status = 'completed';
-                withdrawals[index].completedAt = new Date().toISOString();
-                withdrawals[index].approvedBy = currentAdmin.email;
-                withdrawals[index].approvalNotes = document.getElementById('approvalNotes').value;
-                withdrawals[index].paymentMethod = selectedPaymentMethod;
-                withdrawals[index].verificationCode = verificationCode;
-                withdrawals[index].notificationShown = false; // Reset notification flag
-                
-                localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
-                
-                showAlert('verificationAlert', 'ငွေထုတ်မှု အတည်ပြုပြီးပါသည်', 'success');
-                
-                setTimeout(() => {
-                    cancelVerification();
-                    loadPendingRequests();
-                    updateStats();
-                }, 2000);
-            }
-        }
 
-        // Reject Withdrawal
-        function rejectWithdrawal() {
-            document.getElementById('rejectionModal').classList.add('show');
-        }
+            if (currentAction === 'approve') {
+                user.withdrawalRequests[requestIndex].status = 'completed';
+                user.totalWithdrawn = (user.totalWithdrawn || 0) + currentRequest.points;
 
-        // Confirm Rejection
-        function confirmRejection() {
-            if (!currentWithdrawal) return;
-            
-            const reason = document.getElementById('rejectionReason').value.trim();
-            
-            if (!reason) {
-                alert('ပယ်ဖျက်ခြင်းအကြောင်းအရာ ထည့်သွင်းပါ');
-                return;
-            }
-            
-            // Update withdrawal
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            const index = withdrawals.findIndex(w => w.id === currentWithdrawal.id);
-            
-            if (index !== -1) {
-                withdrawals[index].status = 'failed';
-                withdrawals[index].rejectedAt = new Date().toISOString();
-                withdrawals[index].rejectedBy = currentAdmin.email;
-                withdrawals[index].rejectionReason = reason;
-                withdrawals[index].notificationShown = false; // Reset notification flag
-                
-                // Refund points to user
-                const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                if (user.id) {
-                    user.points = (user.points || 0) + withdrawals[index].points;
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                // Update transaction status
+                const transactionIndex = user.transactions.findIndex(t => 
+                    t.date === currentRequest.date && t.type === 'withdraw'
+                );
+                if (transactionIndex !== -1) {
+                    user.transactions[transactionIndex].status = 'completed';
                 }
-                
-                localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
-                
-                closeRejectionModal();
-                showAlert('verificationAlert', 'ငွေထုတ်မှု ပယ်ဖျက်ပြီးပါသည်', 'success');
-                
-                setTimeout(() => {
-                    cancelVerification();
-                    loadPendingRequests();
-                    updateStats();
-                }, 2000);
+
+                showSuccess('✅ Withdrawal approved! Points have been processed.');
+            } else if (currentAction === 'reject') {
+                user.withdrawalRequests[requestIndex].status = 'failed';
+                user.points = (user.points || 0) + currentRequest.points; // Refund points
+
+                // Update transaction status
+                const transactionIndex = user.transactions.findIndex(t => 
+                    t.date === currentRequest.date && t.type === 'withdraw'
+                );
+                if (transactionIndex !== -1) {
+                    user.transactions[transactionIndex].status = 'failed';
+                }
+
+                showSuccess('❌ Withdrawal rejected! Points have been refunded to user.');
             }
+
+            // Save to LocalStorage
+            localStorage.setItem('rewardHubData_' + deviceId, JSON.stringify(user));
+            
+            closeModal();
+            loadAllUsers();
         }
 
-        // Cancel Verification
-        function cancelVerification() {
-            document.getElementById('verificationPanel').classList.remove('show');
-            document.getElementById('verificationAlert').classList.remove('show');
-            document.getElementById('approvalNotes').value = '';
-            document.getElementById('rejectionReason').value = '';
-            currentWithdrawal = null;
-            selectedPaymentMethod = null;
+        // Switch tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            if (codeTimer) clearInterval(codeTimer);
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        // Close Rejection Modal
-        function closeRejectionModal() {
-            document.getElementById('rejectionModal').classList.remove('show');
-            document.getElementById('rejectionReason').value = '';
-        }
-
-        // Update Stats
-        function updateStats() {
-            const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-            
-            const pending = withdrawals.filter(w => w.status === 'pending').length;
-            const completed = withdrawals.filter(w => w.status === 'completed').length;
-            const failed = withdrawals.filter(w => w.status === 'failed').length;
-            const totalBaht = withdrawals
-                .filter(w => w.status === 'completed')
-                .reduce((sum, w) => sum + w.baht, 0);
-            
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('completedCount').textContent = completed;
-            document.getElementById('failedCount').textContent = failed;
-            document.getElementById('totalBaht').textContent = totalBaht.toLocaleString();
-        }
-
-        // Show Alert
-        function showAlert(elementId, message, type) {
-            const alert = document.getElementById(elementId);
-            alert.textContent = message;
-            alert.className = `alert show alert-${type}`;
-            
+        // Refresh data
+        function refreshData() {
+            loadAllUsers();
+            showSuccess('✅ Data refreshed!');
             setTimeout(() => {
-                alert.classList.remove('show');
-            }, 5000);
+                document.getElementById('successAlert').classList.remove('show');
+            }, 2000);
         }
 
-        // Logout
-        function logout() {
-            if (confirm('ထွက်ခွာမည်သည်ကို အတည်ပြုပါသည်လား?')) {
-                localStorage.removeItem('currentAdmin');
-                window.location.href = 'admin-panel.html';
-            }
+        // Show success
+        function showSuccess(message) {
+            document.getElementById('successMessage').textContent = message;
+            document.getElementById('successAlert').classList.add('show');
         }
 
-        // Auto-refresh pending requests
-        setInterval(() => {
-            loadPendingRequests();
-            updateStats();
-        }, 5000);
+        // Show error
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorAlert').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('errorAlert').classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            document.getElementById('infoAlert').classList.add('show');
+            loadAllUsers();
+            
+            // Auto-refresh every 5 seconds
+            setInterval(loadAllUsers, 5000);
+        });
     </script>
 </body>
 </html>
